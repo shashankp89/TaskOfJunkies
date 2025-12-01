@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TaskFlow To-Do Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="light-theme">
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-pill">✓</div>
+        <div>
+          <h1>TaskOfJunkies</h1>
+          <p class="subtitle">Plan smart. Remove the rust. Stay Shiny. #PLLPL.</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#hero">Overview</a>
+        <a href="#taskFormSection">Add Task</a>
+        <a href="#taskListSection">Tasks</a>
+      </nav>
+      <div class="header-right">
+        <button id="themeToggle" class="btn btn-secondary">
+          🌙 Dark Mode
+        </button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="hero" id="hero">
+        <div class="hero-inner container">
+          <div class="hero-text">
+            <h2 class="hero-eyebrow">Welcome back 👋</h2>
+            <h1 class="hero-title">Turn your to-dos into <span>done</span>.</h1>
+            <p class="hero-subtitle">
+              Capture your tasks, focus on what matters today, and let TaskFlow
+              keep everything organised.
+            </p>
+            <div class="hero-actions">
+              <a href="#taskFormSection" class="btn btn-primary hero-btn">
+                + Add a new task
+              </a>
+              <button id="focusTodayToggle" class="btn btn-ghost">
+                🎯 Focus Today
+              </button>
+            </div>
+            <p id="heroQuote" class="hero-quote">
+              "Small progress is still progress."
+            </p>
+          </div>
+          <div class="hero-highlight">
+            <h3>Next up</h3>
+            <p id="heroNextTask" class="hero-next-task">
+              No upcoming tasks yet. Add one to get started!
+            </p>
+            <p class="hero-tip">Tip: Try to complete it before due date.</p>
+          </div>
+        </div>
+      </section>
+      <section class="container main-content">
+        <section class="card" id="taskFormSection">
+          <h2 id="formTitle">Add New Task</h2>
+          <form id="taskForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="title">Task Title <span class="required">*</span></label>
+                <input
+                  type="text"
+                  id="title"
+                  placeholder="e.g., Complete math assignment"
+                  required
+                />
+                <small class="error" id="titleError"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                  id="description"
+                  rows="2"
+                  placeholder="Optional notes..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category">
+                  <option value="Work">Work</option>
+                  <option value="Personal" selected>Personal</option>
+                  <option value="School">School</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="priority">Priority</label>
+                <select id="priority">
+                  <option value="High">High</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="dueDate">Due Date</label>
+                <input type="date" id="dueDate" />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="taskSubmit" class="btn btn-primary">
+                Add Task
+              </button>
+              <button
+                type="button"
+                id="cancelEdit"
+                class="btn btn-secondary hidden"
+              >
+                Cancel Edit
+              </button>
+            </div>
+          </form>
+        </section>
+        <section class="controls">
+          <div class="card filters-card">
+            <h3>Filters</h3>
+            <div class="filters-grid">
+              <div class="form-group">
+                <label for="filterCategory">Category</label>
+                <select id="filterCategory">
+                  <option value="All">All Categories</option>
+                  <option value="Work">Work</option>
+                  <option value="Personal">Personal</option>
+                  <option value="School">School</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filterPriority">Priority</label>
+                <select id="filterPriority">
+                  <option value="All">All Priorities</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filterStatus">Status</label>
+                <select id="filterStatus">
+                  <option value="All">All</option>
+                  <option value="Active">Active</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="searchInput">Search</label>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search by title or description"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card stats-card">
+            <h3>Task Statistics</h3>
+            <div class="stats">
+              <div class="stat">
+                <span class="stat-label">Total</span>
+                <span class="stat-value" id="totalTasks">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Completed</span>
+                <span class="stat-value" id="completedTasks">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Active</span>
+                <span class="stat-value" id="activeTasks">0</span>
+              </div>
+            </div>
+
+            <div class="stats-graph">
+              <div class="stats-graph-bar">
+                <div
+                  id="completedBar"
+                  class="stats-graph-segment completed"
+                ></div>
+                <div
+                  id="activeBar"
+                  class="stats-graph-segment active"
+                ></div>
+              </div>
+              <div class="stats-graph-legend">
+                <div class="legend-item">
+                  <span class="legend-dot completed"></span>
+                  <span>Completed</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-dot active"></span>
+                  <span>Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="card" id="taskListSection">
+          <div class="section-header">
+            <div>
+              <h2>Tasks</h2>
+               
+            </div>
+            <button id="clearCompleted" class="btn btn-secondary btn-small">
+              Clear completed
+            </button>
+          </div>
+
+          <div id="emptyState" class="empty-state">
+            No tasks yet. Add your first task above! 🎯
+          </div>
+          <div id="taskList" class="task-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-inner container">
+        <p>TaskFlow Planner · Built as a To-Do List project</p>
+        <p class="footer-small">Dark/light mode, stats, and due-date highlighting included. <hr> by SHASHANK PANDEY...</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
